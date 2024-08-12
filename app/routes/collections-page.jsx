@@ -21,7 +21,7 @@ export default function Collections() {
                 <img src={node.image.src} alt={node.image.altText} />
               )}
               <h2>{node.title}</h2>
-              <a href={`/collections/${node.handle}`}>Посмотреть коллекцию</a>
+              <a href={`/collections/${node.handle}`}>View Collection</a>
             </div>
           ))}
         </div>
