@@ -1,8 +1,23 @@
+import {useEffect} from 'react';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import {Link} from '@remix-run/react';
 import {useAside} from '~/components/Aside';
 import {CartLineItem} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
+
+export function ipRequest() {
+  return fetch('/api/freeip')
+    .then((response) => response.json())
+    .then((data) => {
+      if (data) {
+        console.log(data);
+      }
+    })
+    .catch((error) => {
+      console.error('Произошла ошибка:', error);
+    });
+}
+
 
 /**
  * The main cart component that displays the cart items and summary.
@@ -20,21 +35,43 @@ export function CartMain({layout, cart: originalCart}) {
     Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
   const className = `cart-main ${withDiscount ? 'with-discount' : ''}`;
   const cartHasItems = cart?.totalQuantity > 0;
+  const {close} = useAside();
 
-  return (
+  useEffect(() => {
+    ipRequest();
+  }, []);
+  
+  return layout === 'aside' ? (
     <div className={className}>
-      <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="cart-details">
-        <div aria-labelledby="cart-lines">
-          <ul>
-            {(cart?.lines?.nodes ?? []).map((line) => (
-              <CartLineItem key={line.id} line={line} layout={layout} />
-            ))}
-          </ul>
+        <CartEmpty hidden={linesCount} layout={layout} />
+        <div className="cart-details">
+          <div aria-labelledby="cart-lines">
+            <ul>
+              {(cart?.lines?.nodes ?? []).map((line) => (
+                <CartLineItem key={line.id} line={line} layout={layout} />
+              ))}
+            </ul>
+          </div>
+          {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+          <Link to="/cart" onClick={close} prefetch="viewport">
+            Cart details →
+          </Link>
         </div>
+      </div>
+  ) : (
+    <div className={className + ` m-cart-page`}>
+        <CartEmpty hidden={linesCount} layout={layout} />
+        <section className='cart-page'>
+          <div aria-labelledby="cart-lines">
+            <ul>
+              {(cart?.lines?.nodes ?? []).map((line) => (
+                <CartLineItem key={line.id} line={line} layout={layout} />
+              ))}
+            </ul>
+          </div>
+        </section>
         {cartHasItems && <CartSummary cart={cart} layout={layout} />}
       </div>
-    </div>
   );
 }
 

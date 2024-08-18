@@ -4,15 +4,23 @@ import {Await, NavLink} from '@remix-run/react';
 /**
  * @param {FooterProps}
  */
-export function Footer({footer: footerPromise, header, publicStoreDomain}) {
+export function Footer({footerMenus: footerMenusPromise, header, publicStoreDomain}) {
+  // console.log(footerMenusPromise);
   return (
     <Suspense>
-      <Await resolve={footerPromise}>
-        {(footer) => (
+      <Await resolve={footerMenusPromise}> 
+        {(footerMenu, secondaryFooterMenu) => (
           <footer className="footer">
-            {footer?.menu && header.shop.primaryDomain?.url && (
+            {footerMenu?.menu && header.shop.primaryDomain?.url && (
               <FooterMenu
-                menu={footer.menu}
+                menu={footerMenu.menu}
+                primaryDomainUrl={header.shop.primaryDomain.url}
+                publicStoreDomain={publicStoreDomain}
+              />
+            )}
+            {footerMenusPromise?.menu && header.shop.primaryDomain?.url && (
+              <FooterMenu
+                menu={footerMenusPromise.menu}
                 primaryDomainUrl={header.shop.primaryDomain.url}
                 publicStoreDomain={publicStoreDomain}
               />

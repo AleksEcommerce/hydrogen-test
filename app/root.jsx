@@ -14,7 +14,7 @@ import favicon from '~/assets/favicon.svg';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
-import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import {HEADER_QUERY, ALL_FOOTER_MENUS_QUERY} from '~/lib/fragments';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -111,22 +111,31 @@ function loadDeferredData({context}) {
   const {storefront, customerAccount, cart} = context;
 
   // defer the footer query (below the fold)
-  const footer = storefront
-    .query(FOOTER_QUERY, {
+  const footerMenus = storefront
+    .query(ALL_FOOTER_MENUS_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
-        footerMenuHandle: 'footer', // Adjust to your footer menu handle
+        footerMenuHandle: 'footer',
+        secondaryFooterMenuHandle: 'collections-menu',
       },
+    })
+    .then((data) => {
+      console.log('Footer Menus Data:', data);
+      return data;
     })
     .catch((error) => {
       // Log query errors, but don't throw them so the page can still render
       console.error(error);
-      return null;
+      return {
+        footerMenu: null,
+        secondaryFooterMenu: null,
+      };
     });
+    console.log(footerMenus);
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
-    footer,
+    footerMenus,
   };
 }
 

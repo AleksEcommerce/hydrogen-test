@@ -38,4 +38,13 @@ export default defineConfig({
       include: [],
     },
   },
+  server: {
+    proxy: {
+      '/api/freeip': {
+        target: 'https://freeipapi.com/api/json/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/freeip/, ''),
+      },
+    },
+  },
 });

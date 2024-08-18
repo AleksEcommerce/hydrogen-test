@@ -12,20 +12,20 @@ export async function loader({context}) {
 export default function Collections() {
     const {collections} = useLoaderData();
     return (
-      <div className="collections">
-        <h1>Our Collections</h1>
-        <div className="collection-grid">
-          {collections.collections.edges.map(({node}) => (
-            <div key={node.id} className="collection-item">
-              {node.image && (
-                <img src={node.image.src} alt={node.image.altText} />
-              )}
-              <h2>{node.title}</h2>
-              <a href={`/collections/${node.handle}`}>View Collection</a>
+        <div className="collections">
+            <h1>Our Collections</h1>
+            <div className="collection-grid">
+                {collections.collections.edges.map(({node}) => (
+                    <div key={node.id} className="collection-item">
+                        {node.image && (
+                            <img src={node.image.src} alt={node.image.altText} />
+                        )}
+                        <h2>{node.title}</h2>
+                        <a href={`/collections/${node.handle}`}>View Collection</a>
+                    </div>
+                ))}
             </div>
-          ))}
         </div>
-      </div>
     );
 };
 
