@@ -1,22 +1,11 @@
-import {useEffect} from 'react';
+
 import {useOptimisticCart} from '@shopify/hydrogen';
 import {Link} from '@remix-run/react';
 import {useAside} from '~/components/Aside';
 import {CartLineItem} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
+import {SettlementAndWarehouseSelector} from './NovaPosta';
 
-export function ipRequest() {
-  return fetch('/api/freeip')
-    .then((response) => response.json())
-    .then((data) => {
-      if (data) {
-        console.log(data);
-      }
-    })
-    .catch((error) => {
-      console.error('Произошла ошибка:', error);
-    });
-}
 
 
 /**
@@ -36,10 +25,6 @@ export function CartMain({layout, cart: originalCart}) {
   const className = `cart-main ${withDiscount ? 'with-discount' : ''}`;
   const cartHasItems = cart?.totalQuantity > 0;
   const {close} = useAside();
-
-  useEffect(() => {
-    ipRequest();
-  }, []);
   
   return layout === 'aside' ? (
     <div className={className}>
@@ -71,6 +56,7 @@ export function CartMain({layout, cart: originalCart}) {
           </div>
         </section>
         {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+        {/* <SettlementAndWarehouseSelector /> */}
       </div>
   );
 }
