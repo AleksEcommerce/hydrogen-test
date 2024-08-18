@@ -257,6 +257,20 @@ export type HeaderQuery = {
   >;
 };
 
+export type AllFooterMenusQueryQueryVariables = StorefrontAPI.Exact<{
+  footerMenuHandle: StorefrontAPI.Scalars['String']['input'];
+  secondaryFooterMenuHandle: StorefrontAPI.Scalars['String']['input'];
+}>;
+
+export type AllFooterMenusQueryQuery = {
+  footerMenu?: StorefrontAPI.Maybe<{
+    items: Array<Pick<StorefrontAPI.MenuItem, 'title' | 'url'>>;
+  }>;
+  secondaryFooterMenu?: StorefrontAPI.Maybe<{
+    items: Array<Pick<StorefrontAPI.MenuItem, 'title' | 'url'>>;
+  }>;
+};
+
 export type FooterQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   footerMenuHandle: StorefrontAPI.Scalars['String']['input'];
@@ -1198,6 +1212,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n  }\n  query Header(\n    $country: CountryCode\n    $headerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    shop {\n      ...Shop\n    }\n    menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: HeaderQuery;
     variables: HeaderQueryVariables;
+  };
+  '#graphql\n  query allFooterMenusQuery(\n    $footerMenuHandle: String!\n    $secondaryFooterMenuHandle: String!\n  ) {\n    footerMenu: menu(handle: $footerMenuHandle) {\n      items {\n        title\n        url\n      }\n    }\n    secondaryFooterMenu: menu(handle: $secondaryFooterMenuHandle) {\n      items {\n        title\n        url\n      }\n    }\n  }\n': {
+    return: AllFooterMenusQueryQuery;
+    variables: AllFooterMenusQueryQueryVariables;
   };
   '#graphql\n  query Footer(\n    $country: CountryCode\n    $footerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    menu(handle: $footerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: FooterQuery;

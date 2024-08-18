@@ -213,6 +213,27 @@ export const HEADER_QUERY = `#graphql
   ${MENU_FRAGMENT}
 `;
 
+export const ALL_FOOTER_MENUS_QUERY = `#graphql
+  query allFooterMenusQuery(
+    $footerMenuHandle: String!
+    $secondaryFooterMenuHandle: String!
+  ) {
+    footerMenu: menu(handle: $footerMenuHandle) {
+      items {
+        title
+        url
+      }
+    }
+    secondaryFooterMenu: menu(handle: $secondaryFooterMenuHandle) {
+      items {
+        title
+        url
+      }
+    }
+  }
+`;
+
+
 export const FOOTER_QUERY = `#graphql
   query Footer(
     $country: CountryCode

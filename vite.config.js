@@ -38,4 +38,23 @@ export default defineConfig({
       include: [],
     },
   },
+  server: {
+    proxy: {
+      '/api/freeip': {
+        target: 'https://freeipapi.com/api/json/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/freeip/, ''),
+      },
+      '/api/ipinfo': {
+        target: 'https://ipinfo.io/json?token=957680dbe27f5d',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/ipinfo/, ''), // Исправление маршрута
+      },
+      '/api/novaposhta': {
+        target: 'https://api.novaposhta.ua/v2.0/json/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/novaposhta/, ''), // Прокси для Новой Почты
+      },
+    },
+  },
 });
